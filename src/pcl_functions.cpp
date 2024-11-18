@@ -58,12 +58,20 @@ pcl::PointCloud<pcl::Normal>::Ptr estimateNormals(
 {
     auto start_time = std::chrono::high_resolution_clock::now(); // 計測開始
 
+
+    // OpenMP対応クラスを使用
     pcl::PointCloud<pcl::Normal>::Ptr normals(new pcl::PointCloud<pcl::Normal>);
-    pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> normal_estimation;
+    pcl::NormalEstimationOMP<pcl::PointXYZ, pcl::Normal> normal_estimation;
     normal_estimation.setInputCloud(cloud);
+
+    //pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> normal_estimation;
+    //normal_estimation.setInputCloud(cloud);
     pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>);
     normal_estimation.setSearchMethod(tree);
     normal_estimation.setRadiusSearch(0.6);
+
+    normal_estimation.setNumberOfThreads(8);
+
     normal_estimation.compute(*normals);
     RCLCPP_DEBUG(logger, "Normal estimation completed");
 

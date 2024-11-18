@@ -8,6 +8,7 @@
 #include <pcl/filters/crop_box.h>
 #include <pcl/features/normal_3d.h>
 #include <rclcpp/rclcpp.hpp>
+#include <pcl/features/normal_3d_omp.h>
 
 #include <chrono>
 
