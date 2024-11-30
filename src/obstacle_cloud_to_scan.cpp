@@ -215,6 +215,7 @@ private:
         pcl::toROSMsg(*filtered_cloud, filtered_msg);
 
         filtered_msg.header.frame_id = "base_link";
+        filtered_msg.header.stamp = this->get_clock()->now();
         filtered_cloud_publisher_->publish(filtered_msg);
         
         auto callback_end_time = std::chrono::high_resolution_clock::now(); // 計測終了
